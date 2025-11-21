@@ -1,1 +1,1 @@
-# gerenciador_estoque
+# Gerenciador de estoque em JAVA S2
