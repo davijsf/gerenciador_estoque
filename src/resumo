@@ -1,0 +1,4 @@
+-- Para compilar:
+javac -d bin src/**/*.java src/*/*.java src/*.java
+
+-- Para executar:
