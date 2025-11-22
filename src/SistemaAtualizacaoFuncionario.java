@@ -21,39 +21,33 @@ public class SistemaAtualizacaoFuncionario {
         }
 
         System.out.println("Escolha o campo para atualizar:");
-        System.out.println("1 - Nome");
-        System.out.println("2 - CPF");
-        System.out.println("3 - Salário");
-        System.out.println("4 - Tipo de funcionário");
-        System.out.println("5 - E-mail");
-        System.out.println("6 - Senha");
+        System.out.println("1 - Salário");
+        System.out.println("2 - Tipo de funcionário");
+        System.out.println("3 - E-mail");
+        System.out.println("4 - Senha");
 
         int opcao = scanner.nextInt(); scanner.nextLine();
 
         switch (opcao) {
             case 1:
-                System.out.print("Novo nome: ");
-                f.setNome(scanner.nextLine());
-                break;
-            case 2:
-                System.out.print("Novo CPF: ");
-                f.setCpf(scanner.nextLine());
-                break;
-            case 3:
                 System.out.print("Novo salário: ");
                 f.setSalario(scanner.nextDouble()); scanner.nextLine();
                 break;
-            case 4:
+            case 2:
                 System.out.print("Novo tipo de funcionário: ");
                 f.setTipoFuncionario(scanner.nextLine());
                 break;
-            case 5:
+            case 3:
                 System.out.print("Novo e-mail: ");
                 f.setEmail(scanner.nextLine());
                 break;
-            case 6:
+            case 4:
                 System.out.print("Nova senha: ");
                 f.setSenha(scanner.nextLine());
+                break;
+
+            default:
+                System.out.println("Opção incorreta!");
                 break;
         }
 
