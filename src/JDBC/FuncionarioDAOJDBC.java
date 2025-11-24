@@ -50,7 +50,19 @@ public class FuncionarioDAOJDBC implements FuncionarioDAO {
                 f.setTipoFuncionario(rs.getString("tipo_funcionario"));
                 f.setEmail(rs.getString("email"));
                 f.setSenha(rs.getString("senha"));
+
+                System.out.println("==== Dados do Funcionário ====");
+                System.out.println("ID: " + f.getId());
+                System.out.println("Nome: " + f.getNome());
+                System.out.println("CPF: " + f.getCpf());
+                System.out.println("Salário: " + f.getSalario());
+                System.out.println("Tipo: " + f.getTipoFuncionario());
+                System.out.println("Email: " + f.getEmail());
+                System.out.println("Senha: " + f.getSenha());
+                System.out.println("=============================");
                 return f;
+            } else {
+                System.out.println("Funcionário não encontrado para o ID informado!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,6 +158,7 @@ public class FuncionarioDAOJDBC implements FuncionarioDAO {
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            System.out.println("Funcionário removido!");
         } catch (SQLException e) {
             e.printStackTrace();
         }

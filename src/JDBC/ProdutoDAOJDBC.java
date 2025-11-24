@@ -51,7 +51,20 @@ public class ProdutoDAOJDBC {
                 p.setValidade(rs.getDate("validade"));
                 p.setStatus(rs.getString("status"));
                 p.setPreco(rs.getDouble("preco"));
+
+                // Mostra os dados do produto no terminal
+                System.out.println("--- Produto Encontrado ---");
+                System.out.println("ID: " + p.getId());
+                System.out.println("Nome: " + p.getNome());
+                System.out.println("Descrição: " + p.getDescricao());
+                System.out.println("Categoria: " + p.getCategoria());
+                System.out.println("Validade: " + p.getValidade());
+                System.out.println("Status: " + p.getStatus());
+                System.out.println("Preço: R$ " + p.getPreco());
+                System.out.println("-------------------------");
                 return p;
+            } else {
+                System.out.println("Produto não encontrado para o ID informado!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,11 +73,38 @@ public class ProdutoDAOJDBC {
     }
 
     public void update(Produto produto) {
-        StringBuilder sql = new StringBuilder("UPDATE produto SET ");
-        List<Object> params = new ArrayList<>();
-
+        String sql = "UPDATE produto SET preco = ? WHERE id = ?";
         // Em produto, podemos atualizar apenas o preco dele.
-        // ...
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDouble(1, produto.getPreco());
+            stmt.setInt(2, produto.getId());
+            stmt.executeUpdate();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deletar(int id) {
+        // Deletando primeiro o estoque do produto
+        String sqlDeleteEstoque = "DELETE FROM estoque WHERE produto_id = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sqlDeleteEstoque)){
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Deletando o produto, finalmente
+        String sql = "DELETE FROM produto WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)){
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            System.out.println("Produto removido com sucesso!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 

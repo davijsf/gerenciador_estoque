@@ -1,12 +1,12 @@
+package Models;
+
 import Interfaces.FuncionarioDAO;
 import JDBC.FuncionarioDAOJDBC;
-import Models.Conexao;
-import Models.Funcionario;
-
 import java.util.Scanner;
 
 public class SistemaAtualizacaoFuncionario {
-    public static void main(String[] args) {
+
+    public static void exibirMenuAtualizacaoFuncionario() {
         Scanner scanner = new Scanner(System.in);
         FuncionarioDAO dao = new FuncionarioDAOJDBC(Conexao.conectar());
 
@@ -55,4 +55,3 @@ public class SistemaAtualizacaoFuncionario {
         System.out.println("Atualização realizada.");
     }
 }
-
