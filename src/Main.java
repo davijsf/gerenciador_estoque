@@ -2,10 +2,7 @@ import JDBC.FuncionarioDAOJDBC;
 import java.util.Scanner;
 
 import JDBC.ProdutoDAOJDBC;
-import Models.Conexao;
-import Models.Funcionario;
-import Models.Produto;
-import Models.SistemaAtualizacaoFuncionario;
+import Models.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,9 +10,8 @@ public class Main {
         FuncionarioDAOJDBC f = new FuncionarioDAOJDBC(Conexao.conectar());
         ProdutoDAOJDBC p = new ProdutoDAOJDBC(Conexao.conectar());
 
-        int op = 1;
-        System.out.println("ESTOQUES - SYSTEM CD");
-        do {
+        while(true) {
+            System.out.println("ESTOQUES - SYSTEM CD");
             System.out.println("-- Login --");
             System.out.print("Email: ");
             String email = in.nextLine();
@@ -29,6 +25,8 @@ public class Main {
             if (funcionarioLogado != null) {
                 System.out.println("Login realizado: " + funcionarioLogado.getNome());
 
+                int op = 1;
+                do {
                 // Menu principal do sistema
                 System.out.println("-- MENU -- ");
                 System.out.println("1 - Ver produto."); // ok
@@ -40,6 +38,7 @@ public class Main {
                 System.out.println("7 - Atualizar dados do funcionário."); // ok
                 System.out.println("8 - Atualizar preço de produto."); // ok
                 System.out.println("9 - Ver funcionário."); // ok
+                System.out.println("10 - Adicionar funcionário."); // ok
                 System.out.println("0 - Sair.");
 
                 // Escolhendo opção...
@@ -49,8 +48,18 @@ public class Main {
 
                 switch(op) {
                     case 0: {
-                        System.out.println("Encerrando...");
-                        break;
+                        String option;
+                        System.out.print("Deseja continuar? [y/n]: ");
+                        option = in.next();
+                        in.nextLine();
+
+                        if("y".equalsIgnoreCase(option)) {
+                            System.out.println("~Indo para a tela de login...");
+                            break;
+                        } else if("n".equalsIgnoreCase(option)) {
+                            System.out.println("~Encerrando [...]");
+                            System.exit(0);
+                        }
                     }
                     // Busca de produto
                     case 1: {
@@ -69,43 +78,7 @@ public class Main {
 
                     // INserção de produto
                     case 3: {
-                        Produto newProd = new Produto();
-
-                        System.out.print("Nome do produto: ");
-                        newProd.setNome(in.nextLine());
-
-                        System.out.print("Descrição: ");
-                        newProd.setDescricao(in.nextLine());
-
-                        System.out.print("Categoria: ");
-                        newProd.setCategoria(in.nextLine());
-
-                        System.out.print("Validade (yyyy-mm-dd ou deixe vazio): ");
-                        String validadeStr = in.nextLine();
-                        if (!validadeStr.isBlank()) {
-                            try {
-                                newProd.setValidade(java.sql.Date.valueOf(validadeStr));
-                            } catch (IllegalArgumentException e) {
-                                System.out.println("Data em formato inválido! Produto não cadastrado.");
-                                break;
-                            }
-                        } else {
-                            newProd.setValidade(null);
-                        }
-
-                        System.out.print("Status: ");
-                        newProd.setStatus(in.nextLine());
-
-                        System.out.print("Preço: ");
-                        while (!in.hasNextDouble()) {
-                            System.out.println("Preço inválido! Digite um número (use ponto, não vírgula):");
-                            in.next();
-                        }
-                        newProd.setPreco(in.nextDouble());
-                        in.nextLine(); // Limpa buffer
-
-                        p.inserir(newProd);
-                        System.out.println("Produto cadastrado com sucesso!");
+                        SistemaInsercaoProduto.exibirMenuInsercaoProduto();
                         break;
                     }
 
@@ -126,24 +99,29 @@ public class Main {
                     }
 
                     // Remoção de funcionário
+                    // Apenas um gerente pode remover um funcionário
                     case 6: {
-                        System.out.println("--- Remoção de funcionário---");
-                        System.out.print("Digite o id do funcionário: ");
-                        while (!in.hasNextInt()) {
-                            System.out.println("Id inválido! Digite um número inteiro válido:");
-                            in.next();
-                        }
-                        int id = in.nextInt();
+                        if("gerente".equalsIgnoreCase(funcionarioLogado.getTipoFuncionario())) {
+                            System.out.println("--- Remoção de funcionário---");
+                            System.out.print("Digite o id do funcionário: ");
+                            while (!in.hasNextInt()) {
+                                System.out.println("Id inválido! Digite um número inteiro válido:");
+                                in.next();
+                            }
+                            int id = in.nextInt();
 
-                        // Limpa o buffer do teclado após nextInt()
-                        in.nextLine();
-                        f.deletar(id);
+                            // Limpa o buffer do teclado após nextInt()
+                            in.nextLine();
+                            f.deletar(id);
+                        } else {
+                            System.out.println("Apenas gerentes podem remover funcionários.");
+                        }
                         break;
                     }
 
                     // Atualização de funcionário
                     case 7: {
-                        SistemaAtualizacaoFuncionario.exibirMenuAtualizacaoFuncionario();
+                        SistemaAtualizacaoFuncionario.exibirMenuAtualizacaoFuncionario(funcionarioLogado);
                         break;
                     }
 
@@ -188,31 +166,44 @@ public class Main {
                     }
 
                     // Ver funcionário
+                    // Somente gerente tem essa função
                     case 9: {
-                        System.out.print("Digite o id do funcionário: ");
-                        while (!in.hasNextInt()) {
-                            System.out.println("Id inválido! Digite um número inteiro válido:");
-                            in.next();
-                        }
-                        int id = in.nextInt();
+                        if("gerente".equalsIgnoreCase(funcionarioLogado.getTipoFuncionario())) {
+                            System.out.print("Digite o id do funcionário: ");
+                            while (!in.hasNextInt()) {
+                                System.out.println("Id inválido! Digite um número inteiro válido:");
+                                in.next();
+                            }
+                            int id = in.nextInt();
 
-                        // Limpa o buffer do teclado após nextInt()
-                        in.nextLine();
-                        f.buscarPorId(id);
+                            // Limpa o buffer do teclado após nextInt()
+                            in.nextLine();
+                            f.buscarPorId(id);
+                        } else {
+                            System.out.println("Somente gerentes têm essa permissão.");
+                        }
+                        break;
+                    }
+
+                    case 10: {
+                        if("gerente".equalsIgnoreCase(funcionarioLogado.getTipoFuncionario())) {
+                            SistemaInsercaoFuncionario.exibirMenuInsercaoFuncionario();
+                        } else {
+                            System.out.println("Somente gerentes têm essa permissão");
+                        }
                         break;
                     }
 
                     default:
                         System.out.println("Opção inválida!");
                         break;
-
                 }
+            } while(op != 0);
 
             } else {
                 System.out.println("Email ou senha incorretos!\n");
             }
 
-
-        } while(op != 0);
+        }
     }
 }
