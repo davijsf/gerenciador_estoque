@@ -1,7 +1,7 @@
 package Models;
 
 import javax.xml.crypto.Data;
-package Models;public class Movimentacao_estoque {
+public class Movimentacao_estoque {
    private int id_produto;
     private int quantidade;
     private String tipo_movimentacao;
