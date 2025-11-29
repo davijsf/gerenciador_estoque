@@ -31,12 +31,3 @@ CREATE TABLE estoque (
   FOREIGN KEY (produto_id) REFERENCES produto(id)
 );
 
-create table movimentacao_estoque(
-id int primary key auto_increment,
-produto_id int not null,
-quantidade int,
-tipo_movimentacao varchar(20), -- entrada, saída ou ajuste
-data_movimentacao DATE,
-funcionario_id int, -- quem fez a movimentação 
-FOREIGN KEY (funcionario_id) REFERENCES funcionario(id)
-);

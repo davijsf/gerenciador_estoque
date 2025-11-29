@@ -1,13 +1,13 @@
 package Models;
 
-import javax.xml.crypto.Data;
+import java.util.Date;
 
-public class estoque {
+public class Estoque {
     private int id;
     private int id_produto;
     private int quantidade;
-    private String tipo_estoque;
-    private Data data_recebimento;
+    private String tipo_estoque; // Pode ser: normal | segurança(reserva) | sazonal (datas específicas: natal, dia das maes...)
+    private Date data_recebimento;
 
     
     public int getId() {
@@ -42,11 +42,11 @@ public class estoque {
         this.tipo_estoque = tipo_estoque;
     }
 
-    public Data getData_recebimento() {
+    public Date getData_recebimento() {
         return data_recebimento;
     }
 
-    public void setData_recebimento(Data data_recebimento) {
+    public void setData_recebimento(Date data_recebimento) {
         this.data_recebimento = data_recebimento;
     }
 }

@@ -1,12 +1,14 @@
 package Models;
 
+import JDBC.EstoqueDAOJDBC;
 import JDBC.ProdutoDAOJDBC;
+
+import java.util.Date;
 import java.util.Scanner;
 
 public class SistemaInsercaoProduto {
 
-    public static void exibirMenuInsercaoProduto() {
-        Scanner in = new Scanner(System.in);
+    public static void exibirMenuInsercaoProduto(Scanner in) {
         ProdutoDAOJDBC p = new ProdutoDAOJDBC(Conexao.conectar());
 
         System.out.println("--- Inserção de produto ---");
@@ -38,16 +40,55 @@ public class SistemaInsercaoProduto {
         System.out.print("Status: ");
         newProd.setStatus(in.nextLine());
 
-        System.out.print("Preço: ");
-        while (!in.hasNextDouble()) {
-            System.out.println("Preço inválido! Digite um número (use ponto, não vírgula):");
-            in.next();
+        double preco;
+        while (true) {
+            System.out.print("Preço: ");
+            String linha = in.nextLine();     // sempre lê uma linha
+            try {
+                preco = Double.parseDouble(linha.replace(',', '.')); // aceita , ou .
+                if (preco < 0) {
+                    System.out.println("O preço deve ser positivo.");
+                    continue;
+                }
+                break; // entrada válida, sai do while
+            } catch (NumberFormatException ex) {
+                System.out.println("Preço inválido! Digite um número (use ponto ou vírgula).");
+            }
         }
-        newProd.setPreco(in.nextDouble());
-        in.nextLine();
+        newProd.setPreco(preco);
+
+
+        int qtd;
+        while (true) {
+            System.out.print("Quantidade recebida desse produto: ");
+            String linha = in.nextLine();
+            try {
+                qtd = Integer.parseInt(linha);
+                if (qtd < 0) {
+                    System.out.println("Quantidade deve ser positiva.");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException ex) {
+                System.out.println("Quantidade inválida! Digite um número inteiro.");
+            }
+        }
+
+
+        System.out.print("Tipo de estoque do produto\n-- [normal] | [segurança] | [sazonal]\nDigite: ");
+        String tipo_est = in.nextLine();
 
         p.inserir(newProd);
-        System.out.println("Produto cadastrado com sucesso!");
+
+        Estoque e = new Estoque();
+        e.setId_produto(newProd.getId());
+        e.setQuantidade(qtd);
+        e.setTipo_estoque(tipo_est);
+        e.setData_recebimento(new Date(System.currentTimeMillis()));
+
+        EstoqueDAOJDBC estoqueDAO = new EstoqueDAOJDBC(Conexao.conectar());
+        estoqueDAO.adicionarEstoque(e);
+
+        System.out.println("Produto e estoque inicial cadastrados com sucesso!");
     }
 }
-

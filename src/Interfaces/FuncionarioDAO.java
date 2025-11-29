@@ -18,4 +18,6 @@ public interface FuncionarioDAO {
 
     // Delete funcionário:
     void deletar(int id);
+
+    Funcionario autenticar(String email, String senha);
 }

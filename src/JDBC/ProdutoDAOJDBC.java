@@ -1,12 +1,8 @@
 package JDBC;
 
-import Interfaces.ProdutoDAO;
 import Models.Produto;
 
-import javax.xml.transform.Result;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProdutoDAOJDBC {
     private final Connection conn;
@@ -16,10 +12,13 @@ public class ProdutoDAOJDBC {
     public void inserir(Produto produto) {
         String sql = "INSERT INTO produto (nome, descricao, categoria, validade, status, preco) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conn.prepareStatement(sql,
+                Statement.RETURN_GENERATED_KEYS)) {
+
             stmt.setString(1, produto.getNome());
             stmt.setString(2, produto.getDescricao());
             stmt.setString(3, produto.getCategoria());
+
             // Se produto.getValidade() for null, pode usar setNull:
             if (produto.getValidade() != null) {
                 stmt.setDate(4, produto.getValidade());
@@ -28,7 +27,15 @@ public class ProdutoDAOJDBC {
             }
             stmt.setString(5, produto.getStatus());
             stmt.setDouble(6, produto.getPreco());
-            stmt.executeUpdate();
+
+            int rows = stmt.executeUpdate();
+            if(rows > 0) {
+                try (ResultSet rs = stmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        produto.setId(rs.getInt(1));
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -93,14 +100,21 @@ public class ProdutoDAOJDBC {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            return;
         }
 
         // Deletando o produto, finalmente
         String sql = "DELETE FROM produto WHERE id = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)){
             stmt.setInt(1, id);
-            stmt.executeUpdate();
-            System.out.println("Produto removido com sucesso!");
+            int linhasAfetadas = stmt.executeUpdate();
+
+            if(linhasAfetadas > 0) {
+                System.out.println("Produto removido com sucesso!");
+            } else {
+                System.out.println("Nenhum produto encontrado com o ID informado!");
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

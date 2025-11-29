@@ -1,14 +1,17 @@
-import JDBC.FuncionarioDAOJDBC;
 import java.util.Scanner;
-
-import JDBC.ProdutoDAOJDBC;
 import Models.*;
+import JDBC.*;
+
 
 public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
+
         FuncionarioDAOJDBC f = new FuncionarioDAOJDBC(Conexao.conectar());
         ProdutoDAOJDBC p = new ProdutoDAOJDBC(Conexao.conectar());
+        EstoqueDAOJDBC e = new EstoqueDAOJDBC(Conexao.conectar());
+
+
 
         while(true) {
             System.out.println("ESTOQUES - SYSTEM CD");
@@ -30,7 +33,7 @@ public class Main {
                 // Menu principal do sistema
                 System.out.println("-- MENU -- ");
                 System.out.println("1 - Ver produto."); // ok
-                System.out.println("2 - Ver estoque.");
+                System.out.println("2 - Ver estoque."); // ok
                 System.out.println("3 - Adicionar produto."); // ok
                 System.out.println("4 - Remover produto."); // ok
                 System.out.println("5 - Ver movimentação do estoque.");
@@ -76,9 +79,23 @@ public class Main {
                         break;
                     }
 
+                    case 2: {
+                        System.out.print("Digite o id do produto: ");
+                        while (!in.hasNextInt()) {
+                            System.out.println("Id inválido! Digite um número inteiro válido:");
+                            in.next();
+                        }
+                        int id = in.nextInt();
+
+                        // Limpa o buffer do teclado após nextInt()
+                        in.nextLine();
+                        e.buscarEstoquePorID(id);
+                        break;
+                    }
+
                     // INserção de produto
                     case 3: {
-                        SistemaInsercaoProduto.exibirMenuInsercaoProduto();
+                        SistemaInsercaoProduto.exibirMenuInsercaoProduto(in);
                         break;
                     }
 
@@ -121,7 +138,7 @@ public class Main {
 
                     // Atualização de funcionário
                     case 7: {
-                        SistemaAtualizacaoFuncionario.exibirMenuAtualizacaoFuncionario(funcionarioLogado);
+                        SistemaAtualizacaoFuncionario.exibirMenuAtualizacaoFuncionario(funcionarioLogado, in);
                         break;
                     }
 
@@ -187,7 +204,7 @@ public class Main {
 
                     case 10: {
                         if("gerente".equalsIgnoreCase(funcionarioLogado.getTipoFuncionario())) {
-                            SistemaInsercaoFuncionario.exibirMenuInsercaoFuncionario();
+                            SistemaInsercaoFuncionario.exibirMenuInsercaoFuncionario(in);
                         } else {
                             System.out.println("Somente gerentes têm essa permissão");
                         }

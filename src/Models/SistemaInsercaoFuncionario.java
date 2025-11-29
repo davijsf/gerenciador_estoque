@@ -5,9 +5,7 @@ import JDBC.FuncionarioDAOJDBC;
 import java.util.Scanner;
 
 public class SistemaInsercaoFuncionario {
-    public static void exibirMenuInsercaoFuncionario() {
-
-        Scanner in = new Scanner(System.in);
+    public static void exibirMenuInsercaoFuncionario(Scanner in) {
         FuncionarioDAO f = new FuncionarioDAOJDBC(Conexao.conectar());
 
         System.out.println("--- Inserção de funcionario ---");

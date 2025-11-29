@@ -1,20 +1,17 @@
 package Interfaces;
 import java.util.List;
-import Models.estoque;
+import Models.Estoque;
 
-public class EstoqueDAO {
-    // Adicionar estoque
-    void adicionarEstoque(estoque estoque);
-
+public interface EstoqueDAO {
     // Remover estoque
     void removerEstoque(int id);
 
     // Atualizar estoque
-    void atualizarEstoque(estoque estoque);
+    void atualizarEstoque(Estoque estoque);
 
     // Buscar estoque por ID
-    estoque buscarEstoquePorID(int id);
+    Estoque buscarEstoquePorID(int id);
 
     // Listar todos os estoques
-    List<estoque> listarTodosEstoques();
+    List<Estoque> listarTodosEstoques();
 }

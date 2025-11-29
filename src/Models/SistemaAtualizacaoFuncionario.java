@@ -6,8 +6,7 @@ import java.util.Scanner;
 
 public class SistemaAtualizacaoFuncionario {
 
-    public static void exibirMenuAtualizacaoFuncionario(Funcionario f) {
-        Scanner scanner = new Scanner(System.in);
+    public static void exibirMenuAtualizacaoFuncionario(Funcionario f, Scanner scanner) {
         FuncionarioDAO dao = new FuncionarioDAOJDBC(Conexao.conectar());
 
 
