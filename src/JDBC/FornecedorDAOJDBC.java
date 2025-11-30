@@ -1,6 +1,5 @@
 package JDBC;
 
-
 import Interfaces.FornecedorDAO;
 import Models.Fornecedor;
 import java.sql.*;

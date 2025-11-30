@@ -3,7 +3,6 @@ package Models;
 import JDBC.EstoqueDAOJDBC;
 import JDBC.FornecedorDAOJDBC;
 import JDBC.ProdutoDAOJDBC;
-import java.sql.Connection;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -13,9 +12,19 @@ public class SistemaInsercaoProduto {
     public static void exibirMenuInsercaoProduto(Scanner in) {
         ProdutoDAOJDBC p = new ProdutoDAOJDBC(Conexao.conectar());
         FornecedorDAOJDBC FornecedorDAO = new FornecedorDAOJDBC(Conexao.conectar());
+
         System.out.println("--- Inserção de produto ---");
 
-        Produto newProd = new Produto();
+        System.out.println("Esse produto é perecível? [s/n]: ");
+        String perecivelResp = in.nextLine();
+        boolean ehPerecivel = perecivelResp.equalsIgnoreCase("s");
+
+        Produto newProd;
+        if (ehPerecivel) {
+            newProd = new ProdutoPerecivel();
+        } else {
+            newProd = new Produto();
+        }
 
         System.out.print("Nome do produto: ");
         newProd.setNome(in.nextLine());
@@ -25,6 +34,7 @@ public class SistemaInsercaoProduto {
 
         System.out.print("Categoria: ");
         newProd.setCategoria(in.nextLine());
+
 
         System.out.print("Validade (yyyy-mm-dd ou deixe vazio): ");
         String validadeStr = in.nextLine();
@@ -60,15 +70,15 @@ public class SistemaInsercaoProduto {
         newProd.setPreco(preco);
         //Adicionando o fornecedor
         System.out.print("ID do fornecedor: ");
-    int fornecedorId = Integer.parseInt(in.nextLine());
-     Fornecedor fornecedor = FornecedorDAO.buscarFornecedorPorID(fornecedorId);
+        int fornecedorId = Integer.parseInt(in.nextLine());
+        Fornecedor fornecedor = FornecedorDAO.buscarFornecedorPorID(fornecedorId);
+
         if (fornecedor != null) {
             newProd.setFornecedor(fornecedor);
         } else {
             System.out.println("Fornecedor não encontrado! Produto não cadastrado.");
             return;
         }
-
 
         int qtd;
         while (true) {

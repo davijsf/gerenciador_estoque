@@ -11,6 +11,26 @@ public class Produto {
     private Double preco;
     private Fornecedor fornecedor;
 
+    public Produto() {
+    }
+
+    public Produto(String nome, String descricao, String categoria,
+                   java.sql.Date validade, String status, double preco) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.categoria = categoria;
+        this.validade = validade;
+        this.status = status;
+        this.preco = preco;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
 
     public int getId() {
         return id;
@@ -68,11 +88,4 @@ public class Produto {
         this.preco = preco;
     }
 
-    public Fornecedor getFornecedor() {
-        return fornecedor;
-    }
-
-    public void setFornecedor(Fornecedor fornecedor) {
-        this.fornecedor = fornecedor;
-    }
 }
