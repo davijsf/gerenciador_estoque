@@ -31,3 +31,13 @@ CREATE TABLE estoque (
   FOREIGN KEY (produto_id) REFERENCES produto(id)
 );
 
+-- Inserindo dados na tabela funcionario
+INSERT INTO funcionario (nome, cpf, salario, tipo_funcionario, email, senha) VALUES
+('João Silva', '12345678901', 2500.00, 'Vendedor', 'joao.silva@email.com', 'senha123'),
+('Maria Oliveira', '10987654321', 3000.00, 'Gerente', 'maria.oliveira@email.com', 'senha456');
+
+-- Inserindo dados na tabela produto
+INSERT INTO produto (nome, descricao, categoria, validade, status, preco) VALUES
+('Produto A', 'Descrição do Produto A', 'Categoria 1', '2025-12-31', 'Disponível', 19.99),
+('Produto B', 'Descrição do Produto B', 'Categoria 2', '2025-11-30', 'Indisponível', 29.99);
+

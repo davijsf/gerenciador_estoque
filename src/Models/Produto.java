@@ -9,6 +9,8 @@ public class Produto {
     private Date validade;
     private String status;
     private Double preco;
+    private Fornecedor fornecedor;
+
 
     public int getId() {
         return id;
@@ -64,5 +66,13 @@ public class Produto {
 
     public void setPreco(Double preco) {
         this.preco = preco;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 }
