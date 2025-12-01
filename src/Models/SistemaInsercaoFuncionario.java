@@ -1,32 +1,45 @@
 package Models;
 
 import Interfaces.FuncionarioDAO;
-import JDBC.FuncionarioDAOJDBC;
+import DAO.DAOFactory;
 import java.util.Scanner;
 
 public class SistemaInsercaoFuncionario {
     public static void exibirMenuInsercaoFuncionario(Scanner in) {
-        FuncionarioDAO f = new FuncionarioDAOJDBC(Conexao.conectar());
+
+        FuncionarioDAO f = DAOFactory.createFuncionarioDAO();
 
         System.out.println("--- Inserção de funcionario ---");
         System.out.print("Nome: ");
-        String nome = in.next();
+        String nome = in.nextLine();
 
         System.out.print("CPF sem [-] e [.]: ");
-        String cpf = in.next();
+        String cpf = in.nextLine();
 
-        System.out.print("Salário: R$ ");
-        Double salario = in.nextDouble();
-        in.nextLine();
+        double salario;
+        while (true) {
+            System.out.print("Salário: R$ ");
+            String linha = in.nextLine();
+            try {
+                salario = Double.parseDouble(linha.replace(',', '.')); // aceita , ou .
+                if (salario < 0) {
+                    System.out.println("O salário deve ser positivo.");
+                    continue;
+                }
+                break; // salário válido
+            } catch (NumberFormatException e) {
+                System.out.println("Valor inválido! Digite um número (use ponto ou vírgula).");
+            }
+        }
 
         System.out.print("Tipo funcionário [cargo]: ");
-        String tipo_funcionario = in.next();
+        String tipo_funcionario = in.nextLine();
 
         System.out.print("Email: ");
-        String email = in.next();
+        String email = in.nextLine();
 
-        System.out.println("Senha: ");
-        String senha = in.next();
+        System.out.print("Senha: ");
+        String senha = in.nextLine();
 
         // Cria objeto Funcionario com os dados coletados
         Funcionario novo = new Funcionario();

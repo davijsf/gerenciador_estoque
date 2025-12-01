@@ -7,7 +7,7 @@ public interface ProdutoDAO {
     void inserir(Produto produto);
 
     //Busca de produto por ID:
-    void buscarPorID(int id);
+    Produto buscarPorID(int id);
 
     // AtualizarProduto
     void update(Produto produto);

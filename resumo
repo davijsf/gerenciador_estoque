@@ -1,5 +1,4 @@
 -- Para compilar:
-javac -d bin src/Main.java src/JDBC/*.java src/Models/*.java src/Interfaces/*.java
-
+javac -d bin src/Application/Main.java src/DAO/DAOFactory.java src/JDBC/*.java src/Models/*.java src/Interfaces/*.java
 -- Para executar:
-java -cp "bin;src/mysql-connector-j-9.4.0.jar" Main
+java -cp "bin;lib/mysql-connector-j-9.4.0.jar" Application/Main

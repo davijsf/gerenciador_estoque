@@ -1,8 +1,7 @@
 package Models;
 
-import JDBC.EstoqueDAOJDBC;
-import JDBC.FornecedorDAOJDBC;
-import JDBC.ProdutoDAOJDBC;
+import DAO.DAOFactory;
+import Interfaces.*;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -10,8 +9,10 @@ import java.util.Scanner;
 public class SistemaInsercaoProduto {
 
     public static void exibirMenuInsercaoProduto(Scanner in) {
-        ProdutoDAOJDBC p = new ProdutoDAOJDBC(Conexao.conectar());
-        FornecedorDAOJDBC FornecedorDAO = new FornecedorDAOJDBC(Conexao.conectar());
+
+        ProdutoDAO p = DAOFactory.createProdutoDAO();
+        FornecedorDAO fornecedorDAO = DAOFactory.createFornecedorDAO();
+        EstoqueDAO estoqueDAO = DAOFactory.createEstoqueDAO();
 
         System.out.println("--- Inserção de produto ---");
 
@@ -71,7 +72,7 @@ public class SistemaInsercaoProduto {
         //Adicionando o fornecedor
         System.out.print("ID do fornecedor: ");
         int fornecedorId = Integer.parseInt(in.nextLine());
-        Fornecedor fornecedor = FornecedorDAO.buscarFornecedorPorID(fornecedorId);
+        Fornecedor fornecedor = fornecedorDAO.buscarFornecedorPorID(fornecedorId);
 
         if (fornecedor != null) {
             newProd.setFornecedor(fornecedor);
@@ -100,15 +101,16 @@ public class SistemaInsercaoProduto {
         System.out.print("Tipo de estoque do produto\n-- [normal] | [segurança] | [sazonal]\nDigite: ");
         String tipo_est = in.nextLine();
 
+        // Insere produto
         p.inserir(newProd);
 
+        // Insere estoque
         Estoque e = new Estoque();
         e.setId_produto(newProd.getId());
         e.setQuantidade(qtd);
         e.setTipo_estoque(tipo_est);
         e.setData_recebimento(new Date(System.currentTimeMillis()));
 
-        EstoqueDAOJDBC estoqueDAO = new EstoqueDAOJDBC(Conexao.conectar());
         estoqueDAO.adicionarEstoque(e);
 
         System.out.println("Produto e estoque inicial cadastrados com sucesso!");

@@ -1,13 +1,14 @@
 package Models;
 
 import Interfaces.FuncionarioDAO;
-import JDBC.FuncionarioDAOJDBC;
+import DAO.DAOFactory;
 import java.util.Scanner;
 
 public class SistemaAtualizacaoFuncionario {
 
     public static void exibirMenuAtualizacaoFuncionario(Funcionario f, Scanner scanner) {
-        FuncionarioDAO dao = new FuncionarioDAOJDBC(Conexao.conectar());
+
+        FuncionarioDAO dao = DAOFactory.createFuncionarioDAO();
 
 
         if (!"gerente".equalsIgnoreCase(f.getTipoFuncionario())) {
@@ -41,20 +42,20 @@ public class SistemaAtualizacaoFuncionario {
         switch (opcao) {
             case 1:
                 System.out.print("Novo salário: ");
-                f.setSalario(scanner.nextDouble());
+                func.setSalario(scanner.nextDouble());
                 scanner.nextLine();
                 break;
             case 2:
                 System.out.print("Novo tipo de funcionário: ");
-                f.setTipoFuncionario(scanner.nextLine());
+                func.setTipoFuncionario(scanner.nextLine());
                 break;
             case 3:
                 System.out.print("Novo e-mail: ");
-                f.setEmail(scanner.nextLine());
+                func.setEmail(scanner.nextLine());
                 break;
             case 4:
                 System.out.print("Nova senha: ");
-                f.setSenha(scanner.nextLine());
+                func.setSenha(scanner.nextLine());
                 break;
             default:
                 System.out.println("Opção incorreta!");

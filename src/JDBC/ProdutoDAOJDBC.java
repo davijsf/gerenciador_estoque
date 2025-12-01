@@ -1,11 +1,12 @@
 package JDBC;
 
+import Interfaces.ProdutoDAO;
 import Models.Fornecedor;
 import Models.Produto;
 
 import java.sql.*;
 
-public class ProdutoDAOJDBC {
+public class ProdutoDAOJDBC implements ProdutoDAO {
     private final Connection conn;
 
     public ProdutoDAOJDBC(Connection conn) { this.conn = conn; }
@@ -49,7 +50,8 @@ public class ProdutoDAOJDBC {
         }
     }
 
-    public Produto buscarPorId(int id) {
+
+    public Produto buscarPorID(int id) {
          String sql = "SELECT p.*, f.id AS f_id, f.nome AS f_nome, f.cnpj AS f_cnpj, f.telefone AS f_telefone " +
                  "FROM produto p LEFT JOIN fornecedor f ON p.fornecedor_id = f.id WHERE p.id = ?";
 

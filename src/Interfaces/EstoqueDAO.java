@@ -9,6 +9,9 @@ public interface EstoqueDAO {
     // Atualizar estoque
     void atualizarEstoque(Estoque estoque);
 
+    // Adicionar estoque
+    void adicionarEstoque(Estoque estoque);
+
     // Buscar estoque por ID
     Estoque buscarEstoquePorID(int id);
 

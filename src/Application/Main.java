@@ -1,20 +1,22 @@
+package Application;
+
 import java.util.Scanner;
 import Models.*;
-import JDBC.*;
+
+import DAO.DAOFactory;
+import Interfaces.*;
 
 
 public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
-        FuncionarioDAOJDBC f = new FuncionarioDAOJDBC(Conexao.conectar());
-        ProdutoDAOJDBC p = new ProdutoDAOJDBC(Conexao.conectar());
-        EstoqueDAOJDBC e = new EstoqueDAOJDBC(Conexao.conectar());
-
-
+        FuncionarioDAO f = DAOFactory.createFuncionarioDAO();
+        ProdutoDAO p = DAOFactory.createProdutoDAO();
+        EstoqueDAO e = DAOFactory.createEstoqueDAO();
 
         while(true) {
-            System.out.println("ESTOQUES - SYSTEM CD");
+            System.out.println("ESTOQUES - VIRLOS SYSTEM");
             System.out.println("-- Login --");
             System.out.print("Email: ");
             String email = in.nextLine();
@@ -36,12 +38,11 @@ public class Main {
                 System.out.println("2 - Ver estoque."); // ok
                 System.out.println("3 - Adicionar produto."); // ok
                 System.out.println("4 - Remover produto."); // ok
-                System.out.println("5 - Ver movimentação do estoque.");
-                System.out.println("6 - Remover funcionário."); // ok
-                System.out.println("7 - Atualizar dados do funcionário."); // ok
-                System.out.println("8 - Atualizar preço de produto."); // ok
-                System.out.println("9 - Ver funcionário."); // ok
-                System.out.println("10 - Adicionar funcionário."); // ok
+                System.out.println("5 - Remover funcionário."); // ok
+                System.out.println("6 - Atualizar dados do funcionário."); // ok
+                System.out.println("7 - Atualizar preço de produto."); // ok
+                System.out.println("8 - Ver funcionário."); // ok
+                System.out.println("9 - Adicionar funcionário."); // ok
                 System.out.println("0 - Sair.");
 
                 // Escolhendo opção...
@@ -75,7 +76,7 @@ public class Main {
 
                         // Limpa o buffer do teclado após nextInt()
                         in.nextLine();
-                        p.buscarPorId(id);
+                        p.buscarPorID(id);
                         break;
                     }
 
@@ -117,7 +118,7 @@ public class Main {
 
                     // Remoção de funcionário
                     // Apenas um gerente pode remover um funcionário
-                    case 6: {
+                    case 5: {
                         if("gerente".equalsIgnoreCase(funcionarioLogado.getTipoFuncionario())) {
                             System.out.println("--- Remoção de funcionário---");
                             System.out.print("Digite o id do funcionário: ");
@@ -137,13 +138,13 @@ public class Main {
                     }
 
                     // Atualização de funcionário
-                    case 7: {
+                    case 6: {
                         SistemaAtualizacaoFuncionario.exibirMenuAtualizacaoFuncionario(funcionarioLogado, in);
                         break;
                     }
 
                     // Atualização de produto
-                    case 8: {
+                    case 7: {
                         System.out.println("--- Atualização de preço de produto --- ");
                         System.out.print("Digite o id do produto: ");
                         while (!in.hasNextInt()) {
@@ -184,7 +185,7 @@ public class Main {
 
                     // Ver funcionário
                     // Somente gerente tem essa função
-                    case 9: {
+                    case 8: {
                         if("gerente".equalsIgnoreCase(funcionarioLogado.getTipoFuncionario())) {
                             System.out.print("Digite o id do funcionário: ");
                             while (!in.hasNextInt()) {
@@ -202,7 +203,7 @@ public class Main {
                         break;
                     }
 
-                    case 10: {
+                    case 9: {
                         if("gerente".equalsIgnoreCase(funcionarioLogado.getTipoFuncionario())) {
                             SistemaInsercaoFuncionario.exibirMenuInsercaoFuncionario(in);
                         } else {
