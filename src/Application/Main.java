@@ -156,20 +156,32 @@ public class Main {
                         // Limpa o buffer do teclado após nextInt()
                         in.nextLine();
 
+                      
+                        //validar se o produto existe
+                        Produto produtoExistente = p.buscarPorId(id);
+                        if (produtoExistente == null) {
+                            System.out.println("Produto com ID " + id + " não encontrado.");
+                            break;
+                        }
+
                         Double preco = null;
                         do {
                             System.out.print("Novo preço: R$ ");
+                            try{
                             if (in.hasNextDouble()) {
                                 preco = in.nextDouble();
                                 if (preco < 0) {
                                     System.out.println("O preço deve ser positivo. Tente novamente.");
                                     preco = null;
                                 }
+                            
                             } else {
-                                System.out.println("Preço inválido! Digite um número (use ponto, não vírgula):");
-                                in.next(); // Consome entrada inválida
+                               throw new NumberFormatException("O preço invalido! Digite um número (use ponto, não virgula):");
                             }
-                        } while (preco == null);
+                        } catch (NumberFormatException ex) {
+                            System.out.println(ex.getMessage());
+                        } 
+                    } while (preco == null);
 
                         // Limpa o buffer
                         in.nextLine();
