@@ -1,6 +1,7 @@
 package Application;
 
 import java.util.Scanner;
+
 import Models.*;
 
 import DAO.DAOFactory;
@@ -145,55 +146,10 @@ public class Main {
 
                     // Atualização de produto
                     case 7: {
-                        System.out.println("--- Atualização de preço de produto --- ");
-                        System.out.print("Digite o id do produto: ");
-                        while (!in.hasNextInt()) {
-                            System.out.println("Id inválido! Digite um número inteiro válido:");
-                            in.next();
-                        }
-                        int id = in.nextInt();
-
-                        // Limpa o buffer do teclado após nextInt()
-                        in.nextLine();
-
-                      
-                        //validar se o produto existe
-                        Produto produtoExistente = p.buscarPorId(id);
-                        if (produtoExistente == null) {
-                            System.out.println("Produto com ID " + id + " não encontrado.");
-                            break;
-                        }
-
-                        Double preco = null;
-                        do {
-                            System.out.print("Novo preço: R$ ");
-                            try{
-                            if (in.hasNextDouble()) {
-                                preco = in.nextDouble();
-                                if (preco < 0) {
-                                    System.out.println("O preço deve ser positivo. Tente novamente.");
-                                    preco = null;
-                                }
-                            
-                            } else {
-                               throw new NumberFormatException("O preço invalido! Digite um número (use ponto, não virgula):");
-                            }
-                        } catch (NumberFormatException ex) {
-                            System.out.println(ex.getMessage());
-                        } 
-                    } while (preco == null);
-
-                        // Limpa o buffer
-                        in.nextLine();
-
-                        Produto novoProd = new Produto();
-                        novoProd.setId(id);
-                        novoProd.setPreco(preco);
-
-                        p.update(novoProd); // Chama o método update do DAO
-                        System.out.println("Preço do produto atualizado.");
+                        SistemaAtualizacaoProduto.sistemaUpdateProduto(in);
                         break;
                     }
+
 
                     // Ver funcionário
                     // Somente gerente tem essa função

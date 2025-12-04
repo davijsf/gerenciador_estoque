@@ -14,10 +14,17 @@ public class SistemaAtualizacaoFuncionario {
         if (!"gerente".equalsIgnoreCase(f.getTipoFuncionario())) {
             // Só permite alterar senha (case 4)
             System.out.println("Você não é gerente. Só pode alterar sua senha.");
-            System.out.print("Nova senha: ");
-            f.setSenha(scanner.nextLine());
-            dao.atualizar(f);
-            System.out.println("Atualização realizada.");
+
+            // Verificar se deseja alterar senha:
+            System.out.print("Deseja alterar a senha? [s/n]: ");
+            String opcao = scanner.nextLine();
+
+            if (opcao.equalsIgnoreCase("s")) {
+                System.out.print("Nova senha: ");
+                f.setSenha(scanner.nextLine());
+                dao.atualizar(f);
+                System.out.println("Atualização realizada.");
+            }
             return;
         }
         // Se chegou aqui, é gerente: pode acessar todas as opções
